@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Welcome | {% endblock %}
+
+{% block content %}
+<div class="p-10 lg:p-20 text-center">
+    <h1 class="text-3xl lg:text-6xl text-white">Djangochat</h1>
+    <!-- <h2 class="text-xl text-white mt-4">Individual Chats</h2> -->
+    <a href="{% url 'individual_chats' %}" class="px-5 py-3 mt-4 block rounded-xl text-white bg-teal-600 hover:bg-teal-700">Individual Chats</a>
+</div>
+{% endblock %}
