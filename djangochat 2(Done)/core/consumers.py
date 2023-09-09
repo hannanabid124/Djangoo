@@ -1,21 +1,24 @@
 import json
-
+import logging
 from django.contrib.auth.models import User
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-
+import logging
 from .models import Room, Message
 
+logger = logging.getLogger(__name__)
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print('chat connected')
-        self.room_name = self.scope['url_route']['kwargs']['chat_name']
+        logger.info('WebSocket connection established')
+        await self.accept()
+        #print('chat connected')
+        '''self.room_name = self.scope['url_route']['kwargs']['chat_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
-        )
+        )'''
 
         await self.accept()
 

@@ -37,12 +37,6 @@ class CoreViewTests(TestCase):
         response = self.client.get(reverse('individual_chats'))
         self.assertEqual(response.status_code, 302)
 
-class CoreConsumerTests(TestCase):
-    def setUp(self):
-        # Create a test user for authentication
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
-
-
 '''from django.test import TestCase
 
 from django.test import  TestCase

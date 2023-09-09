@@ -12,6 +12,5 @@ urlpatterns = [
     path('messages/<str:username>/', views.private_messages, name='private_messages'),
     path('send_message/<str:username>/', views.send_private_message, name='send_private_message'),
     path('individual_chats/', views.individual_chats, name='individual_chats'),
-    path('individual_chats/', views.individual_chats, name='individual_chats'),
 ]
 

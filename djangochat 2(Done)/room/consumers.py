@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
-from .models import Room, Message, IndiviualChat
+from .models import Room, Message, IndividualChat
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -89,9 +89,9 @@ class IndivConsumer(AsyncWebsocketConsumer):
         print(data)
         message = data['message']
         username = data['username']
-        recivername = data['recivername']
+        receivername = data['receivername']
 
-        await self.save_message(username, message, recivername)
+        await self.save_message(username, message, receivername)
 
         # Send message to room group
         await self.channel_layer.group_send(
@@ -100,7 +100,7 @@ class IndivConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': message,
                 'username': username,
-                'recivername': recivername
+                'receivername': receivername
             }
         )
 
@@ -108,18 +108,18 @@ class IndivConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event['message']
         username = event['username']
-        recivername = event['recivername']
+        receivername = event['receivername']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
             'username': username,
-            'recivername': recivername
+            'receivername': receivername
         }))
 
     @sync_to_async
-    def save_message(self, username, message, recivername):
+    def save_message(self, username, message, receivername):
         sender = User.objects.get(username=username)
-        reciver = User.objects.get(username=recivername)
+        receiver = User.objects.get(username=receivername)
 
-        IndiviualChat.objects.create(sender=sender, reciver=reciver, message=message )
+        IndividualChat.objects.create(sender=sender, receiver=receiver, message=message )

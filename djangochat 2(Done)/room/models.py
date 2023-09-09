@@ -15,9 +15,9 @@ class Message(models.Model):
     class Meta:
         ordering = ('date_added',)
 
-class IndiviualChat(models.Model):
+class IndividualChat(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
-    reciver = models.ForeignKey(User, related_name='reciver', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE)
     message = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 

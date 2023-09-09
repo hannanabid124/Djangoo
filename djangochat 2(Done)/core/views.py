@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.db.models import Count
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 from .forms import SignUpForm
-from room.models import Message, IndiviualChat
+from room.models import Message, IndividualChat
 
 def frontpage(request):
     return render(request, 'core/frontpage.html')
@@ -18,7 +19,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
 
-            login(request, user)
+            #login(request, user)
 
             return redirect('frontpage')
     else:
@@ -36,11 +37,15 @@ def private_messages(request, username):
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         raise Http404("User does not exist")
-
+    
+    
     # Count the messages for the current user
-    total_messages = IndiviualChat.objects.filter(sender=request.user, reciver=user).count()
-
-    messages = IndiviualChat.objects.filter(sender=request.user, reciver=user) | IndiviualChat.objects.filter(sender=user, reciver=request.user)
+    total_messages = IndividualChat.objects.filter(sender=request.user, receiver=user).count()
+    
+    messages = IndividualChat.objects.filter(
+    Q(sender=request.user, receiver=user) | Q(sender=user, receiver=request.user)
+)
+    #messages = IndividualChat.objects.filter(sender=request.user, receiver=user) | IndividualChat.objects.filter(sender=user, receiver=request.user)
 
     return render(request, 'core/private_messages.html', {'user': user, 'messages': messages, 'total_messages': total_messages})
 
